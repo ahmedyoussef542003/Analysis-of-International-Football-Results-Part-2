@@ -31,6 +31,9 @@ WHERE home_team = ( SELECT team    FROM Fiter_CTE_2023 )  AND
 
 
 
+SELECT *
+FROM results 
+
 ---2023 
 --- as away team 
 WITH Fiter_CTE_2023 AS (
@@ -212,12 +215,32 @@ WHERE YEAR (date) = 2024
 ---- Goals_Difference
 ---- Equation -- goals scored - goals conceded 
 --2023
-SELECT SUM (home_score) - SUM (away_score) AS Diff
+SELECT SUM (CASE 
+           WHEN home_team = 'Egypt' Then home_score
+		   WHEN away_team = 'Egypt' Then away_score
+	       ELSE 0 
+		   END ) -
+	SUM (CASE 
+           WHEN home_team = 'Egypt' Then away_score
+		   WHEN away_team = 'Egypt' Then home_score
+	       ELSE 0 
+		   END) AS DIFF_Goals_2023
 FROM results  
-WHERE YEAR(date) =2023 AND home_team = 'Egypt'   
+WHERE YEAR(date) =2023 AND ( home_team = 'Egypt' OR away_team= 'Egypt' )
+
 
 
 --2024
-SELECT SUM (home_score) - SUM (away_score) AS Diff
+SELECT SUM (CASE 
+           WHEN home_team = 'Egypt' Then home_score
+		   WHEN away_team = 'Egypt' Then away_score
+	       ELSE 0 
+		   END ) -
+	SUM (CASE 
+           WHEN home_team = 'Egypt' Then away_score
+		   WHEN away_team = 'Egypt' Then home_score
+	       ELSE 0 
+		   END) AS DIFF_Goals_2023
 FROM results  
-WHERE YEAR(date) =2024 AND home_team = 'Egypt'   
+WHERE YEAR(date) =2024 AND ( home_team = 'Egypt' OR away_team= 'Egypt' )
+
